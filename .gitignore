@@ -5,6 +5,9 @@
 *.obj
 *.exp
 *.hg
+*.idea
+*.hgtags
+*.hgignore
 
 # Compiled Dynamic libraries
 *.so
