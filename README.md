@@ -88,9 +88,9 @@
         Node* offset = zero;
    ```
 
-9. 打开clion，只要hotspot文件夹，右上角的configuration使用进入build出来的目录下的/Users/xiwang/Documents/jdk9/build/macosx-x86_64-normal-server-slowdebug/jdk/bin/java，取消在debug之前的build，在ini.cpp第3884行打断点，忽略clion的各种红色报错，就可以顺利debug虚拟机
+9. 打开clion，只要hotspot文件夹，右上角的configuration使用进入build出来的目录下的jdk9/build/macosx-x86_64-normal-server-slowdebug/jdk/bin/java，取消在debug之前的build，在ini.cpp第3884行打断点，忽略clion的各种红色报错，就可以顺利debug虚拟机
 
-
+编译好的jdk就在项目目录中，可以在build文件夹下找到
 
 
 
