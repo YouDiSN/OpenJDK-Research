@@ -880,13 +880,14 @@ ContinueInNewThread0(int (JNICALL *continuation)(void *), jlong stack_size, void
     int rslt;
     pthread_t tid;
     pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+    pthread_attr_init(&attr); // 作用是初始化一个线程对象的属性
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE); // 设置线程detachstate属性。该表示新线程是否与进程中其他线程脱离同步，如果设置为PTHREAD_CREATE_DETACHED则新线程不能用pthread_join()来同步，且在退出时自行释放所占用的资源。缺省为PTHREAD_CREATE_JOINABLE状态。这个属性也可以在线程创建并运行以后用pthread_detach()来设置，而一旦设置为PTHREAD_CREATE_DETACH状态（不论是创建时设置还是运行时设置）则不能再恢复到PTHREAD_CREATE_JOINABLE状态。
 
-    if (stack_size > 0) {
+    if (stack_size > 0) { // 设置栈的大小
       pthread_attr_setstacksize(&attr, stack_size);
     }
 
+    // 创建病join线程
     if (pthread_create(&tid, &attr, (void *(*)(void*))continuation, (void*)args) == 0) {
       void * tmp;
       pthread_join(tid, &tmp);
@@ -901,6 +902,7 @@ ContinueInNewThread0(int (JNICALL *continuation)(void *), jlong stack_size, void
       rslt = continuation(args);
     }
 
+    // 销毁线程
     pthread_attr_destroy(&attr);
     return rslt;
 }

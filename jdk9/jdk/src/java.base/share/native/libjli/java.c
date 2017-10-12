@@ -243,9 +243,9 @@ JLI_Launch(int argc, char ** argv,              /* main argc, argc */
     _is_java_args = javaargs;
     _wc_enabled = cpwildcard;
 
-    InitLauncher(javaw);
+    InitLauncher(javaw); // 就是做一些debug模式下的工作，比如打印一些参数说明的
     DumpState();
-    if (JLI_IsTraceLauncher()) {
+    if (JLI_IsTraceLauncher()) { // 如果是debug模式
         int i;
         printf("Command line args:\n");
         for (i = 0; i < argc ; i++) {
