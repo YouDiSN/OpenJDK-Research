@@ -404,7 +404,7 @@ JavaMain(void * _args)
     RegisterThread();
 
     /* Initialize the virtual machine */
-    start = CounterGet();
+    start = CounterGet(); // 获取开始时间
     if (!InitializeJVM(&vm, &env, &ifn)) {
         JLI_ReportErrorMessage(JVM_ERROR1);
         exit(1);

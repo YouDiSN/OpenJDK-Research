@@ -249,9 +249,11 @@ gamma是一个精简的Launcher
 
 8. 如果是Java Args，就解析变量，如果不是就设置默认的classpath变量。
 
-9. ParseArguments就是解析参数，比如-jar，--module，-m，--class-path等等
+9. LoadJavaVM中找到libjvm，把libjvm中的JNI_CreateJavaVM方法绑定到CreateJavaVM，并在后续的生成JVM时，会调用这个方法。
 
-10. 之后就调用JVMInit方法，正式初始化JVM
+10. ParseArguments就是解析参数，比如-jar，--module，-m，--class-path等等
+
+11. 之后就调用JVMInit方法，正式初始化JVM
 
 
 至此，环境变量的设置和配置就完成了。接下来做虚拟机的自动和配置。
@@ -263,7 +265,14 @@ gamma是一个精简的Launcher
 1. java_md_macosx.c 1040行，首先判断是不是在同一个线程中启动，-XstartOnFirstThread如果之前设置过这个参数，那么此时就会在同一个线程中启动，不然会的话就会进入ContinueInNewThread方法，一般都是进入continue这个方法。
 2. ContinueInNewThread这个方法则是在java.c 2283行中，第一步会先设置栈的大小，然后继续调用ContinueInNewThread0方法。
 3. ContinueInNewThread0这个方法是在java_md_macosx.c 879行。这里把JavaMain函数（java.c 386行）当作参数传到了ContinueInNewThread0方法中，在ContinueInNewThread0里面，新建并且初始化了一条线程来执行这个方法，接下去就是在新的线程中进一步去执行JavaMain函数。
+4. JavaMain在java.c 386行中，主要调用了InitializeJVM，就是初始化jvm。在java.c 1458行。在设置一些变量和打印一些log之后，调用了CreateJavaVM方法，正式创建JVM
 
 
 
+
+#### 创建JVM
+
+CreateJavaVM方法在jni.cpp中，此时正式的创建JVM终于从jdk的部分跳转到了hotspot的部分，CreateJavaVM方法会根据不同的系统调用不同的方法。
+
+1. JNI_CreateJavaVM_inner jni.cpp 3883行。
 

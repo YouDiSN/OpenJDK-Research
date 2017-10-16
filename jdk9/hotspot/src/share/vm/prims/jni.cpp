@@ -3881,6 +3881,9 @@ DT_RETURN_MARK_DECL(CreateJavaVM, jint
                     , HOTSPOT_JNI_CREATEJAVAVM_RETURN(_ret_ref));
 
 static jint JNI_CreateJavaVM_inner(JavaVM **vm, void **penv, void *args) {
+  // HOTSPOT_JNI_CREATEJAVAVM_ENTRY 在drace_disabled.hpp中，这个只是一个接口
+  // 可以在编译hotspot的时候，用户自定义一些类，实现这个接口，这样就像是钩子函数
+  // 可以做一些额外特殊的逻辑
   HOTSPOT_JNI_CREATEJAVAVM_ENTRY((void **) vm, penv, args);
 
   jint result = JNI_ERR;
