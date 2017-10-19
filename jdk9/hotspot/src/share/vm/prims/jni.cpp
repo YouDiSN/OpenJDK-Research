@@ -3887,6 +3887,7 @@ static jint JNI_CreateJavaVM_inner(JavaVM **vm, void **penv, void *args) {
   HOTSPOT_JNI_CREATEJAVAVM_ENTRY((void **) vm, penv, args);
 
   jint result = JNI_ERR;
+  // 看上去是像给dtrace做一些跟踪记录之类的作用
   DT_RETURN_MARK(CreateJavaVM, jint, (const jint&)result);
 
   // We're about to use Atomic::xchg for synchronization.  Some Zero
@@ -3937,6 +3938,7 @@ static jint JNI_CreateJavaVM_inner(JavaVM **vm, void **penv, void *args) {
    */
   bool can_try_again = true;
 
+  // 完成虚拟机最终的初始化工作
   result = Threads::create_vm((JavaVMInitArgs*) args, &can_try_again);
   if (result == JNI_OK) {
     JavaThread *thread = JavaThread::current();

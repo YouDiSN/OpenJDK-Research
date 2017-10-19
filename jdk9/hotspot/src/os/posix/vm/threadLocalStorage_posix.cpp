@@ -28,6 +28,9 @@
 static pthread_key_t _thread_key;
 static bool _initialized = false;
 
+// 大致上的意思是，通过一个map，可以使得_thread_key对应的那一个线程
+// 就是我们所对应的那条线程，感觉就是通过一个方法获取一个线程的指针，从而始终持有对着线程的引用
+
 // Restore the thread pointer if the destructor is called. This is in case
 // someone from JNI code sets up a destructor with pthread_key_create to run
 // detachCurrentThread on thread death. Unless we restore the thread pointer we
@@ -40,6 +43,7 @@ extern "C" void restore_thread_pointer(void* p) {
 
 void ThreadLocalStorage::init() {
   assert(!_initialized, "initializing TLS more than once!");
+  // linux下用来创建线程私有数据
   int rslt = pthread_key_create(&_thread_key, restore_thread_pointer);
   // If this assert fails we will get a recursive assertion failure
   // and not see the actual error message or get a hs_err file

@@ -3501,6 +3501,7 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
   extern void JDK_Version_init();
 
   // Preinitialize version info.
+  // 主要是拿一些操作系统相关的信息
   VM_Version::early_initialize();
 
   // Check version
@@ -3513,6 +3514,7 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
   ostream_init();
 
   // Process java launcher properties.
+  // 配置java launcher的一些参数
   Arguments::process_sun_java_launcher_properties(args);
 
   // Initialize the os module
@@ -3523,15 +3525,18 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
   create_vm_timer.start();
 
   // Initialize system properties.
+  // 比如java.vm.version，java_class_path等
   Arguments::init_system_properties();
 
   // So that JDK version can be used as a discriminator when parsing arguments
   JDK_Version_init();
 
   // Update/Initialize System properties after JDK version number is known
+  // 就是一般-XX:开头的那些参数的初始化
   Arguments::init_version_specific_system_properties();
 
   // Make sure to initialize log configuration *before* parsing arguments
+  // 就是记录一些创建vm的时间
   LogConfiguration::initialize(create_vm_timer.begin_time());
 
   // Parse arguments

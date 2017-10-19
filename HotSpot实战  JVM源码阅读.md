@@ -274,5 +274,6 @@ gamma是一个精简的Launcher
 
 CreateJavaVM方法在jni.cpp中，此时正式的创建JVM终于从jdk的部分跳转到了hotspot的部分，CreateJavaVM方法会根据不同的系统调用不同的方法。
 
-1. JNI_CreateJavaVM_inner jni.cpp 3883行。
+1. JNI_CreateJavaVM_inner jni.cpp 3883行。这个方法内部一开始的位置有一些钩子函数，以及dtrace一些动态跟踪的接口。
+2. 重点是jni.cpp 3942行，Threads::create_vm()这个方法，对虚拟机做了最终的建立工作，对应的方法是在Threads.cpp 3500行，期间调用了ThreadLocalStorage::init()，感觉是始终持有对线程的引用。Arguments::apply_ergo()这个方法主要检查了gc的组合，堆的大小，一些flag的设置，metaspace的初始化。
 

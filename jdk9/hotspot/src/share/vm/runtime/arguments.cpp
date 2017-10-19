@@ -4486,6 +4486,7 @@ jint Arguments::parse(const JavaVMInitArgs* initial_cmd_args) {
 
 jint Arguments::apply_ergo() {
   // Set flags based on ergonomics.
+  // 工程学
   set_ergonomics_flags();
 
 #if INCLUDE_JVMCI
@@ -4495,6 +4496,7 @@ jint Arguments::apply_ergo() {
   set_shared_spaces_flags();
 
   // Check the GC selections again.
+  // 确定gc的组合
   if (!check_gc_consistency()) {
     return JNI_EINVAL;
   }
