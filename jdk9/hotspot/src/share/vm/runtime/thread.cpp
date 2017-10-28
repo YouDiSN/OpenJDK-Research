@@ -3565,6 +3565,7 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
     os::pause();
   }
 
+  // drace的钩子函数
   HOTSPOT_VM_INIT_BEGIN();
 
   // Timing (must come after argument parsing)
@@ -3648,7 +3649,7 @@ jint Threads::create_vm(JavaVMInitArgs* args, bool* canTryAgain) {
 
   HandleMark hm;
 
-  { MutexLocker mu(Threads_lock);
+  { MutexLocker mu(Threads_lock); // 获取锁
     Threads::add(main_thread);
   }
 

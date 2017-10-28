@@ -458,6 +458,7 @@ JavaMain(void * _args)
         LEAVE();
     }
 
+    // 主要就是释放一些内存
     FreeKnownVMs(); /* after last possible PrintUsage */
 
     if (JLI_IsTraceLauncher()) {

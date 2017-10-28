@@ -275,5 +275,26 @@ gamma是一个精简的Launcher
 CreateJavaVM方法在jni.cpp中，此时正式的创建JVM终于从jdk的部分跳转到了hotspot的部分，CreateJavaVM方法会根据不同的系统调用不同的方法。
 
 1. JNI_CreateJavaVM_inner jni.cpp 3883行。这个方法内部一开始的位置有一些钩子函数，以及dtrace一些动态跟踪的接口。
-2. 重点是jni.cpp 3942行，Threads::create_vm()这个方法，对虚拟机做了最终的建立工作，对应的方法是在Threads.cpp 3500行，期间调用了ThreadLocalStorage::init()，感觉是始终持有对线程的引用。Arguments::apply_ergo()这个方法主要检查了gc的组合，堆的大小，一些flag的设置，metaspace的初始化。
 
+2. 重点是jni.cpp 3942行，Threads::create_vm()这个方法，对虚拟机做了最终的建立工作，对应的方法是在Threads.cpp 3500行，期间调用了ThreadLocalStorage::init()，感觉是始终持有对线程的引用。Arguments::apply_ergo()这个方法主要检查了gc的组合，堆的大小，一些flag的设置，metaspace的初始化。JavaThread是定义在thread.hpp 786中的，这是非常重要的一个类。
+
+   > 其中涉及到一个c++中的友元类，写作friend class XXXX。友元类并不属于该类，但是该类可以使用友元类的私有方法。
+
+   init_globals是在init.cpp 100行中，在这里主要对所有全局的东西进行初始化，比如类加载器，MarkSweep（GC）等。
+
+   初始化了ObjectMonitor，**关于ObjectMonitor具体的作用和使用的场景暂时还不清楚，但是大致上应该是一种监控对象的封装**
+
+   > 顺便在阅读源码的过程中，顺便看到了关于栈溢出的问题。 
+   >
+   > 栈溢出分为三种类型，抛异常打日志的溢出、记录错误消息线程退出的溢出以及什么消息都没有的溢出
+   >
+   > [你假笨---栈溢出完全解读](http://www.jianshu.com/p/debef4f69a90),
+
+3. 之后就是一些常规的记录工作，以及如果jvm创建失败的再次尝试或者抛出异常的工作。
+
+
+
+
+####LoadClass
+
+在创建jvm成功之后，java.c 1559行，这个方法jdk9和jdk8有非常大的不同之处，主要体现在GetStaticMethodID这个方法。
