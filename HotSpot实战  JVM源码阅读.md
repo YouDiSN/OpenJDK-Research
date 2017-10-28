@@ -298,3 +298,10 @@ CreateJavaVM方法在jni.cpp中，此时正式的创建JVM终于从jdk的部分�
 ####LoadClass
 
 在创建jvm成功之后，java.c 1559行，这个方法jdk9和jdk8有非常大的不同之处，主要体现在GetStaticMethodID这个方法。
+
+首先先通过GetLauncherHelperClass这个方法，找到sun/launcher/LauncherHelper这个类，调用这个类的checkAndLoadMain方法，通过sun的这个方法，就会进入到java内部的ClassLoader的逻辑。之后还对加载到的类进行校验，这部分逻辑都在LauncherHelper这个类中执行的。
+
+如果没有找到mainclass，又会尝试去寻找applicationClass，注释上面说是个JavaFX的程序准备的，不过个人感觉没什么特别的用处
+
+在之后就是去调用mainClass中的main方法，以及推出之后一些异常处理。
+
