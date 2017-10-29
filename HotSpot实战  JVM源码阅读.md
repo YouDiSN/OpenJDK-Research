@@ -305,3 +305,20 @@ CreateJavaVM方法在jni.cpp中，此时正式的创建JVM终于从jdk的部分�
 
 在之后就是去调用mainClass中的main方法，以及推出之后一些异常处理。
 
+
+
+
+
+# 类机制
+
+#### OOP-Klass二分模型
+
+jvm并没有按照传统的，每一个java class都生成一个c++的class去对应**（c++的class长成什么样子？为什么不继承？好处是什么？）**，而是采用了一套OOP-Klass的二分模型。
+
+![oop-klass结构图](/Users/xiwang/Documents/OpenJDK-Research/screen_shot/OOP-Klass.png)
+
+- OOP：即普通对象指针，用来描述对象的实例信息
+- Klass：Java类的c++对等体，用来描述java类
+
+对于OOPS对象来说，主要职能是在于表示对象的实例数据，
+
