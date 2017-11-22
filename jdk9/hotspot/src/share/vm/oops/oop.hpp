@@ -68,6 +68,9 @@ class oopDesc {
   // Fast access to barrier set. Must be initialized.
   static BarrierSet* _bs;
 
+  // 大量使用inline的目的是因为oop在jvm运行期间会被大量的创建和使用，使用短小精干的inline方法
+  // 可以最大限度的确保性能
+
  public:
   markOop  mark()      const { return _mark; }
   markOop* mark_addr() const { return (markOop*) &_mark; }

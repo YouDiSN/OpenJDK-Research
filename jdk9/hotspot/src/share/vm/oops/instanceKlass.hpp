@@ -126,7 +126,7 @@ class InstanceKlass: public Klass {
  public:
   InstanceKlass() { assert(DumpSharedSpaces || UseSharedSpaces, "only for CDS"); }
 
-  // See "The Java Virtual Machine Specification" section 2.16.2-5 for a detailed description
+  // See "The Java Virtual Machine Specification" (即Java虚拟机规范) section 2.16.2-5 for a detailed description
   // of the class loading & initialization procedure, and the use of the states.
   enum ClassState {
     allocated,                          // allocated (but not yet linked)
